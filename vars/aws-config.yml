@@ -3,15 +3,15 @@
 #####################################################################
 
 # AWS region to install environment into
-region: "us-west-2"
+region: "sa-east-1"
 
 # The public DNS for cluster, you must have a Route 53 zone configured for this
-public_dns_zone: "ocplab.com"
+public_dns_zone: "ck.osecloud.com"
 # Prefix for subdomain for wildcard DNS, i.e. *.apps.ocplab.com
 public_subdomain_prefix: "apps"
 
 # Amazon key pair to use, must exist before running script. Please generate in AWS management console.
-aws_key_pair: "mykeypair"
+aws_key_pair: "ck_saop"
 
 # You have a choice, if you know the specific AMI you want to use, reference it by ami_id
 # If you do not know the ami_id, comment out the ami_id variable and uncomment the redhat_owner_id
@@ -23,14 +23,14 @@ aws_key_pair: "mykeypair"
 # below refers to a gold image in us-west-2, it's unlikely you have access
 # to it so change this variable to something appropriate. Use the AWS console
 # to locate a suitable image
-ami_id: "ami-cfa343b7"
+ami_id: "ami-0e88cb62"
 
 # Whether to install metrics
-install_metrics: false
+install_metrics: true
 # Whether to install prometheus
-install_prometheus: false
+install_prometheus: true
 # Whether to install logging
-install_logging: false
+install_logging: true
 
 # Users to create in OpenShift, highly recommend changing password
 # Set admin to true for users you want to be the cluster administrator
@@ -52,7 +52,7 @@ generic_user_password: Welcome1
 
 # Variables for node configuration
 bastion_ami_size: "t2.small"
-master_ami_size: "m4.xlarge"
+master_ami_size: "t2.large"
 node_ami_size: "t2.large"
 master_root_volume_size: 50
 node_root_volume_size: 30
@@ -78,8 +78,8 @@ ocp_version: "3.7"
 # playbook automatically. Note this installs gluster for
 # apps use only, the registry will continue to use AWS storage.
 #####################################################################
-install_gluster: false
-gluster_ami_size: m4.xlarge
+install_gluster: true
+gluster_ami_size: t2.large
 # This volume size is per gluster node so total storage is (gluster_volume_size * 3)
 gluster_volume_size: 100
 
