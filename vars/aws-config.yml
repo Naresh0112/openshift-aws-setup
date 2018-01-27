@@ -1,102 +1,39 @@
-#####################################################################
-# Variables you should update for your installation
-#####################################################################
-
-# AWS region to install environment into
 region: "sa-east-1"
-
-# The public DNS for cluster, you must have a Route 53 zone configured for this
 public_dns_zone: "ck.osecloud.com"
-# Prefix for subdomain for wildcard DNS, i.e. *.apps.ocplab.com
 public_subdomain_prefix: "apps"
-
-# Amazon key pair to use, must exist before running script. Please generate in AWS management console.
 aws_key_pair: "ck_saop"
-
-# You have a choice, if you know the specific AMI you want to use, reference it by ami_id
-# If you do not know the ami_id, comment out the ami_id variable and uncomment the redhat_owner_id
-
-# Use the owner tag if you want to look up the AMI automatically
-#redhat_owner_id: "309956199498"
-
-# Use ami_id if you know the specific ami you want to use, note the ami
-# below refers to a gold image in us-west-2, it's unlikely you have access
-# to it so change this variable to something appropriate. Use the AWS console
-# to locate a suitable image
 ami_id: "ami-0e88cb62"
 
-# Whether to install metrics
 install_metrics: true
-# Whether to install prometheus
 install_prometheus: true
-# Whether to install logging
 install_logging: true
 
-# Users to create in OpenShift, highly recommend changing password
-# Set admin to true for users you want to be the cluster administrator
-# Any admin users are also added to master linux VM for cockpit
+install_gluster: true
+gluster_ami_size: t2.large
+gluster_volume_size: 100
+
 users:
   - {name: admin, password: Welcome1, admin: true}
-
-# Generates a set of non-admin users that can be used for workshops,
-# demos, etc. Users are created with the prefix plus a number using
-# the password specified
 create_generic_user: true
 generic_user_prefix: developer
 generic_user_count: 5
 generic_user_password: Welcome1
 
-#####################################################################
-# Variables you may optionally change for your installation
-#####################################################################
-
-# Variables for node configuration
 bastion_ami_size: "t2.small"
 master_ami_size: "t2.large"
 node_ami_size: "t2.large"
+
 master_root_volume_size: 50
 node_root_volume_size: 30
 docker_volume_size: 50
 
-# The number of application nodes in the cluster
 app_nodes: 3
-
-# The type of OpenShift deployment, must be either origin or openshift-enterprise.
-# To install OpenShift Enterprise, you must have a valid OpenShift subscription
-# with Red Hat and provide your subscription login and pool
 deployment_type: "openshift-enterprise"
-
-# Only needed for Origin
-# openshift_branch: "release-3.6"
-
-# Only needed for Container Platform
 ocp_version: "3.7"
 
-#####################################################################
-# This playbook can optionally install CNS (Gluster) for applications. It
-# requires three nodes dedicated to it which will be provisioned by the
-# playbook automatically. Note this installs gluster for
-# apps use only, the registry will continue to use AWS storage.
-#####################################################################
-install_gluster: true
-gluster_ami_size: t2.large
-# This volume size is per gluster node so total storage is (gluster_volume_size * 3)
-gluster_volume_size: 100
-
-#####################################################################
-# Variables you do not want to change unless you are sure you know 
-# what you are doing
-#####################################################################
-
-# namespace is used to uniquely differentiate the stack
 namespace: "openshift"
-# dns_zone is private zone, created and deleted by scripts
 dns_zone: "ose.local"
-
 vpc_cidr: "10.0.0.0/16"
 subnet_cidr: "10.0.1.0/24"
-
 amazon_user: "ec2-user"
-
-# This must match what is in /openshift-install/files/openshift_inventory.cfg
 htpasswd_path: "/etc/origin/master/htpasswd"
