@@ -56,8 +56,6 @@
    msg: "Check file install-openshift.log in Bastion 'ssh ec2-user@{{bastion_public_ip}}' "
 
 - name: run openshift installation script
-  shell: './install-openshift.sh {{deployment_type}} |& tee install-openshift.log'
+  shell: 'timeout 30m ./install-openshift.sh {{deployment_type}}'
   delegate_to: "{{bastion_public_ip}}"
   remote_user: "{{amazon_user}}"
-  async: 1800
-  poll: 5
