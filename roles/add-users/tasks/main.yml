@@ -9,11 +9,13 @@
     generic_users: "{{ generic_users|default([]) + [ {'name': generic_user_prefix + item, 'admin': false, 'password': generic_user_password} ] }}"
   with_sequence: count={{generic_user_count}} format="%02d"
   when: create_generic_user
+  ignore_errors: yes
 
 - name: Add generic users
   include: add-user.yml user={{ item }}
   with_items: "{{ generic_users }}"
   when: create_generic_user
+  ignore_errors: yes
 
 - name: Add admin accounts to master for Cockpit
   shell: "useradd --home /home/{{item.name}} {{item.name}} && echo {{item.name}}:{{item.password}} | chpasswd –crypt-method=SHA512"
@@ -22,6 +24,7 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   become: true
+  ignore_errors: yes
 
 - name: oc login as admin users for cockpit to work
   shell: "oc login -u {{item.name}} -p {{item.password}} https://localhost:8443 --insecure-skip-tls-verify=true"
@@ -31,3 +34,4 @@
   remote_user: "{{amazon_user}}"
   sudo: true
   sudo_user: "{{item.name}}"
+  ignore_errors: yes
