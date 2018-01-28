@@ -10,7 +10,7 @@ install_metrics: true
 install_prometheus: true
 install_logging: true
 
-install_gluster: false
+install_gluster: true
 gluster_ami_size: t2.large
 gluster_volume_size: 100
 
