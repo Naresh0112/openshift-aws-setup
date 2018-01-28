@@ -4,7 +4,7 @@ public_subdomain_prefix: "apps"
 aws_key_pair: "ck_saop"
 #ami_id: "ami-0e88cb62"
 #ami_id: "ami-58c88434"
-ami_id: "ami-e9c68a85"
+ami_id: "ami-5fd69a33"
 
 install_metrics: false
 install_prometheus: false
