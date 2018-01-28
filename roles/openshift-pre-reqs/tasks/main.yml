@@ -15,6 +15,7 @@
       - "docker-1.12.6"
     state: "present"
   become: true
+  when: false
  
 - name: configure docker storage
   template:
