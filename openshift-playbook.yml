@@ -48,8 +48,8 @@
 
   roles:    
 
-  - {role: register-virtual-machines, when: deployment_type == 'openshift-enterprise'}
-  - update-virtual-machines
+  #- {role: register-virtual-machines, when: deployment_type == 'openshift-enterprise'}
+  #- update-virtual-machines
 
 #############################################################
 # Openshift Prerequisites
@@ -71,7 +71,7 @@
     state: 'present'
 
   roles:
-   - openshift-pre-reqs
+   #- openshift-pre-reqs
 
 #############################################################
 # Install Openshift
@@ -87,9 +87,9 @@
     state: 'present'
 
   roles:
-  #- openshift-install
-  #- add-users
-  #- openshift-post-install
+  - openshift-install
+  - add-users
+  - openshift-post-install
 
   post_tasks:
    - name: Confirmation message
