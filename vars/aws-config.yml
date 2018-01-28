@@ -2,7 +2,8 @@ region: "sa-east-1"
 public_dns_zone: "ck.osecloud.com"
 public_subdomain_prefix: "apps"
 aws_key_pair: "ck_saop"
-ami_id: "ami-0e88cb62"
+#ami_id: "ami-0e88cb62"
+ami_id: "ami-5bb1fd37"
 
 install_metrics: true
 install_prometheus: true
