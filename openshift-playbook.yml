@@ -71,8 +71,7 @@
     state: 'present'
 
   roles:
-  - openshift-pre-reqs
-  when: false
+#  - openshift-pre-reqs
 
 #############################################################
 # Install Openshift
