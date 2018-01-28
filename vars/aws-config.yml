@@ -6,9 +6,9 @@ aws_key_pair: "ck_saop"
 #ami_id: "ami-58c88434"
 ami_id: "ami-5fd69a33"
 
-install_metrics: false
-install_prometheus: false
-install_logging: false
+install_metrics: true
+install_prometheus: true
+install_logging: true
 
 install_gluster: false
 gluster_ami_size: t2.large
