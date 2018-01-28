@@ -39,3 +39,10 @@ vpc_cidr: "10.0.0.0/16"
 subnet_cidr: "10.0.1.0/24"
 amazon_user: "ec2-user"
 htpasswd_path: "/etc/origin/master/htpasswd"
+
+
+cf_account_email: '9chakri@gmail.com'
+cf_account_api_token: ''
+le_certsdir: '~/'
+domain: 'ck.osecloud.com'
+csr_subj: '/C=NO/ST=Oslo/L=Oslo/O=National Inquisitor/OU=McKraken/CN={{ domain }}'
