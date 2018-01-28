@@ -87,7 +87,7 @@
     state: 'present'
 
   roles:
-  - openshift-install
+  #- openshift-install
   - add-users
   - openshift-post-install
 
