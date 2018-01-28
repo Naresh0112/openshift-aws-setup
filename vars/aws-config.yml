@@ -25,7 +25,7 @@ master_ami_size: "t2.large"
 node_ami_size: "t2.large"
 
 master_root_volume_size: 50
-node_root_volume_size: 30
+node_root_volume_size: 50
 docker_volume_size: 50
 
 app_nodes: 1
