@@ -59,12 +59,6 @@
   shell: 'timeout 30m ./install-openshift.sh {{deployment_type}} |& tee install.log'
   delegate_to: "{{bastion_public_ip}}"
   remote_user: "{{amazon_user}}"
-  background: true
-
-- name: show install progress
-  shell: 'tail -f install.log'
-  delegate_to: "{{bastion_public_ip}}"
-  remote_user: "{{amazon_user}}"
   async: true
   poll: 5
 
