@@ -9,14 +9,14 @@
 - name: Unsubscribe VMs
   include: unregister-vm.yml public_ip={{ item.public_ip_address }}
   with_items: "{{ ec2_facts.instances }}"
-  when: ((deployment_type == 'openshift-enterprise') and (item.state == 'running'))
+  when: false and ((deployment_type == 'openshift-enterprise') and (item.state == 'running'))
   ignore_errors: yes
 
 - name: Notify of VMs that could not be unsubscribed
   debug:
     msg: "The VM {{ item.private_dns_name }} could not be unsubscribed because it was stopped."
   with_items: "{{ ec2_facts.instances }}"
-  when: ((deployment_type == 'openshift-enterprise') and (item.state == 'stopped'))
+  when: false and ((deployment_type == 'openshift-enterprise') and (item.state == 'stopped'))
   ignore_errors: yes
 
 - name: Disassociate elastic IP
