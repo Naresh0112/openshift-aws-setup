@@ -4,12 +4,12 @@ public_subdomain_prefix: "apps"
 aws_key_pair: "ck_saop"
 ami_id: "ami-5fd69a33"
 
-install_metrics: false
-install_prometheus: false
+install_metrics: true
+install_prometheus: true
 install_logging: false
-install_gluster: false
+install_gluster: true
 
-gluster_ami_size: t2.large
+gluster_ami_size: t2.small
 gluster_volume_size: 100
 
 users:
@@ -19,7 +19,7 @@ generic_user_prefix: developer
 generic_user_count: 5
 generic_user_password: Welcome1
 
-bastion_ami_size: "t2.large"
+bastion_ami_size: "t2.small"
 master_ami_size: "t2.small"
 node_ami_size: "t2.small"
 
@@ -27,7 +27,7 @@ master_root_volume_size: 100
 node_root_volume_size: 100
 docker_volume_size: 10
 
-app_nodes: 5
+app_nodes: 1
 deployment_type: "openshift-enterprise"
 ocp_version: "3.7"
 
