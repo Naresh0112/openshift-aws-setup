@@ -1,8 +1,9 @@
 ---
 - name: Install metrics
-  shell: "ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True"
+  shell: "ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True -i openshift_inventory.cfg"
   delegate_to: "{{bastion_public_ip}}"
   remote_user: "{{amazon_user}}"
+  ignore_errors: true
   become: false
   
 - name: OpenShift login
