@@ -9,7 +9,7 @@ install_prometheus: true
 install_logging: false
 install_gluster: true
 
-gluster_ami_size: t2.small
+gluster_ami_size: t2.large
 gluster_volume_size: 100
 
 users:
@@ -19,15 +19,15 @@ generic_user_prefix: dev
 generic_user_count: 51
 generic_user_password: openshift
 
-bastion_ami_size: "t2.small"
-master_ami_size: "t2.small"
-node_ami_size: "t2.small"
+bastion_ami_size: t2.large
+master_ami_size: t2.large
+node_ami_size: t2.large
 
 master_root_volume_size: 100
 node_root_volume_size: 100
 docker_volume_size: 10
 
-app_nodes: 1
+app_nodes: 2
 deployment_type: "openshift-enterprise"
 ocp_version: "3.7"
 
