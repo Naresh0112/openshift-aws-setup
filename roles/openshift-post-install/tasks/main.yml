@@ -1,10 +1,17 @@
 ---
+- name: Install metrics
+  shell: "ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True"
+  delegate_to: "{{bastion_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  become: false
+  
 - name: OpenShift login
   shell: "oc login -u system:admin"
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   become: false
   when: install_gluster
+  
 
 - name: Disable AWS default storage class
   shell: "oc patch storageclass gp2 -p '{\"metadata\": {\"annotations\": {\"storageclass.kubernetes.io/is-default-class\": \"false\"}}}' -n openshift"
