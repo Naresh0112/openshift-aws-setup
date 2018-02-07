@@ -11,6 +11,7 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   become: false
+  ignore_errors: true
   when: install_gluster
   
 
@@ -35,4 +36,5 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   become: false
-  when: install_gluster  
+  when: install_gluster
+  ignore_errors: true
