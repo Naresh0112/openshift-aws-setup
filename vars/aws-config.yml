@@ -15,9 +15,9 @@ gluster_volume_size: 100
 users:
   - {name: admin, password: Welcome1, admin: true}
 create_generic_user: true
-generic_user_prefix: developer
-generic_user_count: 5
-generic_user_password: Welcome1
+generic_user_prefix: dev
+generic_user_count: 51
+generic_user_password: openshift
 
 bastion_ami_size: "t2.small"
 master_ami_size: "t2.small"
