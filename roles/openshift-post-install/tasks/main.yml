@@ -9,14 +9,14 @@
 
 - name: Install epel-release
   shell: "rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
-  delegate_to: "18.231.25.74" #"{{bastion_public_ip}}"
+  delegate_to: "52.67.113.70" #"{{bastion_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true
   
-- stat: path=/etc/letsencrypt/live/bastion.ck.osecloud.com/fullchain.pem
+- stat: path=/etc/letsencrypt/live/ck.osecloud.com/fullchain.pem
   register: cert_f
-  delegate_to: "18.231.25.74" #"{{master_public_ip}}"
+  delegate_to: "52.67.113.70" #"{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true
@@ -28,17 +28,17 @@
       - "certbot"
     state: "present"
   become: true
-  delegate_to: "18.231.25.74" #"{{master_public_ip}}"
+  delegate_to: "52.67.113.70" #"{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
-  when: cert_f.stat.isdir is  defined
+  when: cert_f.stat.isdir is not defined
   
 - name: Get certs
-  shell: "certbot certonly --standalone -d bastion.ck.osecloud.com  --email 9chakri@gmail.com --agree-tos -n" 
-  delegate_to: "18.231.25.74" #"{{master_public_ip}}"
+  shell: "certbot certonly --standalone -d ck.osecloud.com  --email 9chakri@gmail.com --agree-tos -n" 
+  delegate_to: "52.67.113.70" #"{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   become: true
   ignore_errors: true
-  when: provision_ssl_certs and cert_f.stat.isdir is  defined
+  when: provision_ssl_certs and cert_f.stat.isdir is not defined
 
 - name: OpenShift login
   shell: "oc login -u system:admin"
