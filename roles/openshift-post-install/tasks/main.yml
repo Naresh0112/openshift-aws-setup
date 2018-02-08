@@ -5,7 +5,15 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
-  
+
+- name: Get certs
+  shell: "certbot certonly --standalone -d {{public_dns_zone}}  --email 9chakri@gmail.com --agree-tos"
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  become: false
+  ignore_errors: true
+  when: provision_ssl_certs
+
 - name: OpenShift login
   shell: "oc login -u system:admin"
   delegate_to: "{{master_public_ip}}"
