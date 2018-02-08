@@ -5,6 +5,7 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
+  when: false
 
 - name: Install epel-release
   shell: "rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
