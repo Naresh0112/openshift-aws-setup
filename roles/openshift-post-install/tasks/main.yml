@@ -1,7 +1,7 @@
 ---
 - name: Install metrics
   shell: "ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True -i openshift_inventory.cfg"
-  delegate_to: "{{bastion_public_ip}}"
+  delegate_to: "52.67.113.70" #"{{bastion_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
@@ -11,7 +11,7 @@
 
 - name: Get certs
   shell: "certbot certonly --standalone -d {{public_dns_zone}}  --email 9chakri@gmail.com --agree-tos"
-  delegate_to: "{{master_public_ip}}"
+  delegate_to: "52.67.113.70" #"{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   become: true
   ignore_errors: true
