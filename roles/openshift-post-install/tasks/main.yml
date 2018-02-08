@@ -48,6 +48,7 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   when: not file_exists.stat.exists
+  ignore_errors: true
   
 - name: Get certs
   shell: "certbot certonly --standalone -d {{public_dns_zone}} -d hawkular.apps.{{public_dns_zone}} -d kibana.apps.{{public_dns_zone}} --email 9chakri@gmail.com --agree-tos -n" 
