@@ -11,6 +11,7 @@
   delegate_to: "52.67.113.70" #"{{bastion_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
+  become: false
   get_url:
     url: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     dest: /tmp/epel-release-latest-7.noarch.rpm
