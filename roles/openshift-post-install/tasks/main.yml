@@ -29,6 +29,7 @@
     state: "present"
   become: true
   delegate_to: "18.231.25.74" #"{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
   when: cert_f.stat.isdir is  defined
   
 - name: Get certs
