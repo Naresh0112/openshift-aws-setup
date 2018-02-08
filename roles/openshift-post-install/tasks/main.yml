@@ -30,7 +30,7 @@
   ignore_errors: true
   become: true
   
-- stat: path=/etc/letsencrypt/live/ck.osecloud.com
+- stat: path=/etc/letsencrypt/live/{{public_dns_zone}}
   register: file_exists
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
