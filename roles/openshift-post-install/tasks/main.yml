@@ -22,6 +22,13 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true
+
+- name: Install certbot 1
+  shell: "yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional"
+  delegate_to: "52.67.113.70" #"{{bastion_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  ignore_errors: true
+  become: true
   
 - stat: path=/etc/letsencrypt/live/ck.osecloud.com
   register: file_exists
@@ -33,6 +40,7 @@
 - name: install certbot and shellinabox
   yum:
     name:
+      - "yum-utils"
       - "shellinabox"
       - "certbot"
     state: "present"
