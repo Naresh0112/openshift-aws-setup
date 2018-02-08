@@ -13,7 +13,7 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true
-  become_method: sudo
+  become_method: su
   
 - stat: path=/etc/letsencrypt/live/ck.osecloud.com
   register: cert_f
