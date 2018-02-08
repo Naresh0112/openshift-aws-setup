@@ -5,14 +5,17 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
+  
+- stat: path=/etc/letsencrypt/live/{{public_dns_zone}}/fullchain.pem
+  register: cert_f
 
 - name: Get certs
   shell: "certbot certonly --standalone -d {{public_dns_zone}}  --email 9chakri@gmail.com --agree-tos"
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
-  become: false
+  become: true
   ignore_errors: true
-  when: provision_ssl_certs
+  when: provision_ssl_certs and cert_f.stat.isdir is not defined
 
 - name: OpenShift login
   shell: "oc login -u system:admin"
