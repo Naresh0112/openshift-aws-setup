@@ -41,13 +41,12 @@
   yum:
     name:
       - "yum-utils"
-      - "shellinabox"
       - "certbot"
     state: "present"
   become: true
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
-  when: not file_exists.stat.exists
+  when: (file_exists.stat.isdir is defined)
   ignore_errors: true
   
 - name: Get certs
@@ -56,7 +55,7 @@
   remote_user: "{{amazon_user}}"
   become: true
   ignore_errors: true
-  when: provision_ssl_certs and not file_exists.stat.exists
+  when: provision_ssl_certs and (file_exists.stat.isdir is not defined)
 
 - name: OpenShift login
   shell: "oc login -u system:admin"
