@@ -7,13 +7,18 @@
   become: false
   when: false
 
+- name: Download file from a file path
+  get_url:
+    url: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    dest: /tmp/epel-release-latest-7.noarch.rpm
+    creates: /tmp/epel-release-latest-7.noarch.rpm
+
 - name: Install epel-release
-  shell: "rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+  shell: "rpm -Uvh /tmp/epel-release-latest-7.noarch.rpm"
   delegate_to: "52.67.113.70" #"{{bastion_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true
-  become_method: su
   
 - stat: path=/etc/letsencrypt/live/ck.osecloud.com
   register: file_exists
