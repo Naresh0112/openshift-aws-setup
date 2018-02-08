@@ -3,6 +3,7 @@ public_dns_zone: "ck.osecloud.com"
 public_subdomain_prefix: "apps"
 aws_key_pair: "ck_saop"
 ami_id: "ami-5fd69a33"
+provision_ssl_certs: true
 
 install_metrics: true
 install_prometheus: true
