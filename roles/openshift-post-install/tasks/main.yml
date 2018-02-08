@@ -14,7 +14,7 @@
   ignore_errors: true
   become: true
   
-- stat: path=/etc/letsencrypt/live/ck.osecloud.com/fullchain.pem
+- stat: path=/etc/letsencrypt/live/ck.osecloud.com
   register: cert_f
   delegate_to: "52.67.113.70" #"{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
