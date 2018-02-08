@@ -14,10 +14,11 @@
   ignore_errors: true
   become: true
   
-- stat: path=/etc/letsencrypt/live/{{public_dns_zone}}/fullchain.pem
+- stat: path=/etc/letsencrypt/live/bastion.ck.osecloud.com/fullchain.pem
   register: cert_f
   delegate_to: "18.231.25.74" #"{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
+  become: true
 
 - name: install certbot and shellinabox
   yum:
