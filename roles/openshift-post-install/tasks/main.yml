@@ -29,7 +29,7 @@
     state: "present"
   become: true
   delegate_to: "18.231.25.74" #"{{master_public_ip}}"
-  when: cert_f.stat.isdir is not defined
+  when: cert_f.stat.isdir is  defined
   
 - name: Get certs
   shell: "certbot certonly --standalone -d bastion.ck.osecloud.com  --email 9chakri@gmail.com --agree-tos -n" 
@@ -37,7 +37,7 @@
   remote_user: "{{amazon_user}}"
   become: true
   ignore_errors: true
-  when: provision_ssl_certs and cert_f.stat.isdir is not defined
+  when: provision_ssl_certs and cert_f.stat.isdir is  defined
 
 - name: OpenShift login
   shell: "oc login -u system:admin"
