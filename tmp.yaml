@@ -1,0 +1,12 @@
+- name: tmp
+  hosts: local
+
+  vars_files:
+    - vars/aws-config.yml
+
+  vars:
+    nodes_ip: "{{ lookup('file','nodes.json') | from_json }}"
+    state: 'present'
+
+  roles:
+  - openshift-post-install
