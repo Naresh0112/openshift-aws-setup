@@ -1,14 +1,14 @@
 ---
 - name: Install metrics
   shell: "ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True -i openshift_inventory.cfg"
-  delegate_to: "18.231.25.74" #"{{bastion_public_ip}}"
+  delegate_to: "{{bastion_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
   when: false
 
 - name: Download file from a file path
-  delegate_to: "52.67.113.70" #"{{bastion_public_ip}}"
+  delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
@@ -18,21 +18,21 @@
 
 - name: Install epel-release
   shell: "rpm -Uvh /tmp/epel-release-latest-7.noarch.rpm"
-  delegate_to: "52.67.113.70" #"{{bastion_public_ip}}"
+  delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true
 
 - name: Install certbot dependencies
   shell: "yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional"
-  delegate_to: "52.67.113.70" #"{{bastion_public_ip}}"
+  delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true
   
 - stat: path=/etc/letsencrypt/live/ck.osecloud.com
   register: file_exists
-  delegate_to: "52.67.113.70" #"{{master_public_ip}}"
+  delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true
@@ -45,13 +45,13 @@
       - "certbot"
     state: "present"
   become: true
-  delegate_to: "52.67.113.70" #"{{master_public_ip}}"
+  delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   when: not file_exists.stat.exists
   
 - name: Get certs
-  shell: "certbot certonly --standalone -d ck.osecloud.com  --email 9chakri@gmail.com --agree-tos -n" 
-  delegate_to: "52.67.113.70" #"{{master_public_ip}}"
+  shell: "certbot certonly --standalone -d {{public_dns_zone}} -d hawkular.apps.{{public_dns_zone}} -d kibana.apps.{{public_dns_zone}} --email 9chakri@gmail.com --agree-tos -n" 
+  delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   become: true
   ignore_errors: true
