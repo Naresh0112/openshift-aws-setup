@@ -47,7 +47,14 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
-  
+
+- name: Scale router down to zero
+  shell: "oc scale dc/router --replicas=0 -n default && sleep 3" 
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  become: false
+  ignore_errors: true
+
 - name: Get certs
   shell: "certbot certonly --standalone -d {{public_dns_zone}} -d hawkular.apps.{{public_dns_zone}} -d kibana.apps.{{public_dns_zone}} --email 9chakri@gmail.com --agree-tos -n" 
   delegate_to: "{{master_public_ip}}"
@@ -55,6 +62,13 @@
   become: true
   ignore_errors: true
   when: provision_ssl_certs
+  
+- name: Scale router back to 1
+  shell: "oc scale dc/router --replicas=1 -n default && sleep 3" 
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  become: false
+  ignore_errors: true  
   
 - name: OpenShift login
   shell: "oc login -u system:admin"
