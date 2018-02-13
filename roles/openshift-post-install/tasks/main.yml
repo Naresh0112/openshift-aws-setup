@@ -46,7 +46,6 @@
   become: true
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
-  when: (file_exists.stat.isdir is defined)
   ignore_errors: true
   
 - name: Get certs
