@@ -8,7 +8,7 @@ provision_ssl_certs: true
 install_metrics: false
 install_prometheus: false
 install_logging: false
-install_gluster: false
+install_gluster: true
 
 gluster_ami_size: t2.large
 gluster_volume_size: 100
