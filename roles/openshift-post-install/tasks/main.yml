@@ -21,12 +21,6 @@
   ignore_errors: true
   become: true
   
-- stat: path=
-  register: file_exists
-  delegate_to: "{{master_public_ip}}"
-  remote_user: "{{amazon_user}}"
-  ignore_errors: true
-  become: true
 
 - name: install certbot and shellinabox
   yum:
@@ -87,6 +81,10 @@
   become: true
 
 - name: restart atomic openshift service to pick new certs
+  become: true
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"  
+  ignore_errors: false  
   systemd:
     state: restarted
     daemon_reload: yes
