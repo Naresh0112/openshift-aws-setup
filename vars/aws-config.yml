@@ -45,3 +45,4 @@ cf_account_api_token: ''
 le_certsdir: '~/'
 domain: 'ck.osecloud.com'
 csr_subj: '/C=NO/ST=Oslo/L=Oslo/O=National Inquisitor/OU=McKraken/CN={{ domain }}'
+ansible_python_interpreter: /usr/bin/python2.7
