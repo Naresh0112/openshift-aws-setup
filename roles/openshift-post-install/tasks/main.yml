@@ -32,7 +32,7 @@
   ignore_errors: true
   become: true
   
-- stat: path=/etc/letsencrypt/live/{{public_dns_zone}}
+- stat: path=
   register: file_exists
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
@@ -57,14 +57,17 @@
   become: false
   ignore_errors: true
 
-- name: Get certs
-  shell: "certbot certonly --standalone -d {{public_dns_zone}} -d hawkular.apps.{{public_dns_zone}} -d kibana.apps.{{public_dns_zone}} --email 9chakri@gmail.com --agree-tos -n" 
-  delegate_to: "{{master_public_ip}}"
-  remote_user: "{{amazon_user}}"
+- name: Get custom certs
   become: true
   ignore_errors: true
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"  
   when: provision_ssl_certs
-
+  command: "certbot certonly --standalone -d {{public_dns_zone}} -d hawkular.apps.{{public_dns_zone}} -d kibana.apps.{{public_dns_zone}} --email 9chakri@gmail.com --agree-tos -n"
+  args: 
+    chdir: "/home/{{amazon_user}}"
+    creates: "/etc/letsencrypt/live/{{public_dns_zone}}"
+    
 - name: Scale router back to 1
   shell: "oc scale dc/router --replicas=1 -n default && sleep 3" 
   delegate_to: "{{master_public_ip}}"
