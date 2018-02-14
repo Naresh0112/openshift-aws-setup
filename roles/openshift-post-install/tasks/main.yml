@@ -70,8 +70,8 @@
 - name: Download yq
   get_url:
     url: https://github.com/mikefarah/yq/releases/download/1.14.0/yq_linux_386
-    dest: /usr/bin/yq
-    mode: 0644
+    dest: /usr/bin
+    mode: 0755
   become: true 
   ignore_errors: true
     
@@ -91,7 +91,7 @@
   delegate_to: "{{master_public_ip}}"
   
 - name: patch master-config to include custom certs
-  shell: "yq m /etc/origin/master/master-config.yaml.bak /home/ec2-user/patch.yaml > /etc/origin/master/master-config.yaml"
+  shell: "/usr/bin/yq_linux_386 m /etc/origin/master/master-config.yaml.bak /home/ec2-user/patch.yaml > /etc/origin/master/master-config.yaml"
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
