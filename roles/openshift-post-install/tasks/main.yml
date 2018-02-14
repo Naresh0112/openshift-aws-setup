@@ -84,7 +84,7 @@
   become: true  
 
 - name: patch master-config to include custom certs
-  shell: "yq m /etc/origin/master/master-config.yaml.bak ~{{amazon_user}}/patch.yaml > /etc/origin/master/master-config.yaml"
+  shell: "yq m /etc/origin/master/master-config.yaml.bak /home/ec2-user/patch.yaml > /etc/origin/master/master-config.yaml"
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
