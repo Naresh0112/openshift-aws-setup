@@ -13,6 +13,10 @@
   yum:
     name: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     state: present
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"    
+  ignore_errors: true
+  become: true
 
 - name: Install certbot dependencies
   shell: "yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional"
