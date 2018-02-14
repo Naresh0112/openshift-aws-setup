@@ -6,6 +6,8 @@
   ignore_errors: true
   become: false
   when: false
+  async: 4500
+  poll: 5
 
 - name: Download file from a file path
   delegate_to: "{{master_public_ip}}"
