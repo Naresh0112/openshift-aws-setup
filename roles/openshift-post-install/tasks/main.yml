@@ -65,6 +65,13 @@
   ignore_errors: true
   when: provision_ssl_certs
 
+- name: Scale router back to 1
+  shell: "oc scale dc/router --replicas=1 -n default && sleep 3" 
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  become: false
+  ignore_errors: true  
+  
 - name: Download yq
   get_url:
     url: https://github.com/mikefarah/yq/releases/download/1.14.0/yq_linux_386
@@ -87,13 +94,11 @@
   ignore_errors: true
   become: true
 
-- name: Scale router back to 1
-  shell: "oc scale dc/router --replicas=1 -n default && sleep 3" 
-  delegate_to: "{{master_public_ip}}"
-  remote_user: "{{amazon_user}}"
-  become: false
-  ignore_errors: true  
-  
+- name: restart atomic openshift service to pick new certs
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: atomic-openshift-master-api
 
 - name: Disable AWS default storage class
   shell: "oc patch storageclass gp2 -p '{\"metadata\": {\"annotations\": {\"storageclass.kubernetes.io/is-default-class\": \"false\"}}}' -n openshift"
