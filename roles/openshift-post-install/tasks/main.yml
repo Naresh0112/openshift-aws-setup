@@ -63,6 +63,14 @@
   ignore_errors: true
   when: provision_ssl_certs
 
+- name: Download yq
+  get_url:
+    url: https://github.com/mikefarah/yq/releases/download/1.14.0/yq_linux_386
+    dest: /usr/bin/yq
+    mode: 0644
+  become: true 
+  ignore_errors: true
+    
 - name: copy patch file for certs
   template:
     src: "../files/patch.yaml"
