@@ -5,7 +5,7 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
-  when: false
+  when: true
   async: 4500
   poll: 5
 
