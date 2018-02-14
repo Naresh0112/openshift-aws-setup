@@ -5,7 +5,7 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
-  when: false
+  when: true
 
 - name: Download file from a file path
   delegate_to: "{{master_public_ip}}"
@@ -69,14 +69,6 @@
   remote_user: "{{amazon_user}}"
   become: false
   ignore_errors: true  
-  
-- name: OpenShift login
-  shell: "oc login -u system:admin"
-  delegate_to: "{{master_public_ip}}"
-  remote_user: "{{amazon_user}}"
-  become: false
-  ignore_errors: true
-  when: install_gluster
   
 
 - name: Disable AWS default storage class
