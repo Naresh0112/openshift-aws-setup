@@ -5,7 +5,7 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
-  when: true
+  when: false
 
 - name: Download file from a file path
   delegate_to: "{{master_public_ip}}"
