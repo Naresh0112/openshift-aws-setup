@@ -1,0 +1,6 @@
+servingInfo:
+  namedCertificates:
+  - certFile: ./archive/{{public_dns_zone}}/fullchain1.pem
+    keyFile: ./archive/{{public_dns_zone}}/privkey1.pem
+    names:
+    - {{public_dns_zone}}
