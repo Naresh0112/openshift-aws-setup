@@ -76,13 +76,15 @@
     dest: "~{{amazon_user}}/patch.yaml"
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
+  ignore_errors: true
 
 - name: Move foo to bar
   command: creates="/etc/origin/master/master-config.yaml.bak" mv /etc/origin/master/master-config.yaml /etc/origin/master/master-config.yaml.bak
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true  
-
+  delegate_to: "{{master_public_ip}}"
+  
 - name: patch master-config to include custom certs
   shell: "yq m /etc/origin/master/master-config.yaml.bak /home/ec2-user/patch.yaml > /etc/origin/master/master-config.yaml"
   delegate_to: "{{master_public_ip}}"
