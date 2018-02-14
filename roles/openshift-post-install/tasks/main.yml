@@ -62,7 +62,21 @@
   become: true
   ignore_errors: true
   when: provision_ssl_certs
+
+- name: copy patch file for certs
+  template:
+    src: "../files/patch.yaml"
+    dest: "~{{amazon_user}}/patch.yaml"
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
   
+- name: patch master-config to include custom certs
+  shell: "yq m /etc/origin/master/master-config.yaml ~{{amazon_user}}/patch.yaml > /etc/origin/master/master-config.yaml"
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  ignore_errors: true
+  become: true
+
 - name: Scale router back to 1
   shell: "oc scale dc/router --replicas=1 -n default && sleep 3" 
   delegate_to: "{{master_public_ip}}"
