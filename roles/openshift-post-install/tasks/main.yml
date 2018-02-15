@@ -48,7 +48,9 @@
   stat:
     path: "/etc/letsencrypt/live/{{public_dns_zone}}"
   register: folder_to_check
-
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}" 
+  
 - name: Get custom certs
   become: true
   ignore_errors: true
@@ -74,7 +76,9 @@
     mode: 0755
   become: true 
   ignore_errors: true
-    
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  
 - name: copy patch file for certs
   template:
     src: "../files/patch.yaml"
