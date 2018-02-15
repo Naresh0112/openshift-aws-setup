@@ -59,4 +59,5 @@
   shell: 'timeout 30m ./install-openshift.sh {{deployment_type}} |& tee install-openshift.log'
   delegate_to: "{{bastion_public_ip}}"
   remote_user: "{{amazon_user}}"
+  when: false
 
