@@ -49,14 +49,14 @@
     path: "/etc/letsencrypt/live/{{public_dns_zone}}"
   register: folder_to_check
   delegate_to: "{{master_public_ip}}"
-  remote_user: "{{amazon_user}}" 
+  remote_user: "{{amazon_user}}"
   
 - name: Get custom certs
   become: true
   ignore_errors: true
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"  
-  when: provision_ssl_certs and folder_to_check.stat.exists and folder_to_check.stat.isdir
+  when: provision_ssl_certs and (not folder_to_check.stat.exists)
   command: "certbot certonly --standalone -d {{public_dns_zone}} -d hawkular.apps.{{public_dns_zone}} -d kibana.apps.{{public_dns_zone}} --email 9chakri@gmail.com --agree-tos -n"
   args: 
     chdir: "/home/{{amazon_user}}"
