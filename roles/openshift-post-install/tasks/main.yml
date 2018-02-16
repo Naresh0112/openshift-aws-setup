@@ -64,6 +64,8 @@
   register: folder_to_check
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
+  become: true 
+  ignore_errors: false
   
 - name: Get custom certs
   become: true
@@ -106,7 +108,7 @@
     dest: "~{{amazon_user}}/patch.yaml"
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
-  ignore_errors: true
+  ignore_errors: true 
 
 - name: Move foo to bar
   command: creates="/etc/origin/master/master-config.yaml.bak" mv /etc/origin/master/master-config.yaml /etc/origin/master/master-config.yaml.bak
