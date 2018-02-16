@@ -30,7 +30,7 @@
   become: false
 
 - name: Expose shell route
-  shell: "oc expose svc shell -n default"
+  shell: "oc expose svc shell -n default --hostname='shell.apps.{{public_dns_zone}}'"
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
