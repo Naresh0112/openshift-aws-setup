@@ -85,7 +85,7 @@
     creates: "/etc/letsencrypt/live/{{public_dns_zone}}"
 
 - name: copy certs folder
-  copy: src=/etc/letsencrypt/archive dest=/etc/origin/master/ remote_src=yes directory_mode=yes
+  copy: src=/etc/letsencrypt/archive dest=/etc/origin/master/ remote_src=no directory_mode=yes
   become: true
   ignore_errors: false
   delegate_to: "{{master_public_ip}}"
