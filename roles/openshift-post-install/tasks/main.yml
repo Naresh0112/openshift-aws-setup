@@ -15,6 +15,13 @@
   when: true
 
 
+- name: Provide anyuid exception for shellinbox
+  shell: "oc adm policy add-scc-to-user anyuid -z default -n default"
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  ignore_errors: true
+  become: false
+
 - name: Deploy shell in the box
   shell: "oc new-app docker.io/debianmaster/shellinabox -n default --name=shell -e SIAB_SCRIPT='https://gist.githubusercontent.com/debianmaster/a524dab8e4f2c20d1148a7647f3e38cf/raw/d32c955e56b0d96367687b3c1ba63fddade5b4ae/addusers.sh'"
   delegate_to: "{{master_public_ip}}"
