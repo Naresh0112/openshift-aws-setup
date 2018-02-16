@@ -12,7 +12,7 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
-  when: "'FAILED' in metrics_result.stderr"
+  when: true
 
 
 - name: Deploy shell in the box
