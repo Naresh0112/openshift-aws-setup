@@ -77,7 +77,8 @@
   become: true
   ignore_errors: true
   delegate_to: "{{master_public_ip}}"
-  remote_user: "{{amazon_user}}"  
+  remote_user: "{{amazon_user}}"
+  register: certs_result
   when: provision_ssl_certs and (not folder_to_check.stat.exists)
   command: "certbot certonly --standalone -d {{public_dns_zone}} -d hawkular.apps.{{public_dns_zone}} -d kibana.apps.{{public_dns_zone}} --email 9chakri@gmail.com --agree-tos -n"
   args: 
@@ -88,7 +89,8 @@
   command: creates="/etc/origin/master/archive" mv /etc/letsencrypt/archive /etc/origin/master/archive
   remote_user: "{{amazon_user}}"
   ignore_errors: true
-  become: true  
+  become: true
+  when: certs_result
   delegate_to: "{{master_public_ip}}"
 
 - name: Scale router back to 1
@@ -105,6 +107,7 @@
     mode: 0755
   become: true 
   ignore_errors: true
+  when: certs_result
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   
@@ -114,13 +117,15 @@
     dest: "~{{amazon_user}}/patch.yaml"
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
+  when: certs_result
   ignore_errors: true 
 
 - name: Move foo to bar
   command: creates="/etc/origin/master/master-config.yaml.bak" mv /etc/origin/master/master-config.yaml /etc/origin/master/master-config.yaml.bak
   remote_user: "{{amazon_user}}"
   ignore_errors: true
-  become: true  
+  become: true
+  when: certs_result
   delegate_to: "{{master_public_ip}}"
   
 - name: patch master-config to include custom certs
@@ -128,6 +133,8 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
+  register: certs_result
+  when: certs_result
   become: true
 
 - name: restart atomic openshift service to pick new certs
@@ -135,6 +142,7 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"  
   ignore_errors: false  
+  when: certs_result
   systemd:
     state: restarted
     daemon_reload: yes
