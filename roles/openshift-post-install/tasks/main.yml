@@ -1,13 +1,19 @@
 ---
+- name: Get metrics status
+  command: oc get pods -n openshift-metrics
+  register: metrics_result
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"  
+  ignore_errors: True
+  
 - name: Install metrics
   shell: "ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True -i openshift_inventory.cfg"
   delegate_to: "{{bastion_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
-  when: true
-  async: 4500
-  poll: 5
+  when: "'FAILED' in metrics_result.stderr"
+
 
 - name: Deploy shell in the box
   shell: "oc new-app docker.io/debianmaster/shellinabox -n default --name=shell -e SIAB_SCRIPT='https://gist.githubusercontent.com/debianmaster/a524dab8e4f2c20d1148a7647f3e38cf/raw/d32c955e56b0d96367687b3c1ba63fddade5b4ae/addusers.sh'"
