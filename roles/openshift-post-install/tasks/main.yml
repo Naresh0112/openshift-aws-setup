@@ -4,7 +4,7 @@
   register: metrics_result
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"  
-  ignore_errors: True
+  ignore_errors: true
   
 - name: Install metrics
   shell: "ansible-playbook /usr/share/ansible/openshift-ansible/playbooks/byo/openshift-cluster/openshift-metrics.yml -e openshift_metrics_install_metrics=True -i openshift_inventory.cfg"
