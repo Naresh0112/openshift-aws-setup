@@ -9,6 +9,20 @@
   async: 4500
   poll: 5
 
+- name: Deploy shell in the box
+  shell: "oc new-app docker.io/debianmaster/shellinabox -n default --name=shell -e SIAB_SCRIPT='https://gist.githubusercontent.com/debianmaster/a524dab8e4f2c20d1148a7647f3e38cf/raw/d32c955e56b0d96367687b3c1ba63fddade5b4ae/addusers.sh'"
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  ignore_errors: true
+  become: false
+
+- name: Expose shell route
+  shell: "oc expose svc shell -n default"
+  delegate_to: "{{master_public_ip}}"
+  remote_user: "{{amazon_user}}"
+  ignore_errors: true
+  become: false
+
 - name: Add epel-release
   yum:
     name: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -61,14 +75,13 @@
   args: 
     chdir: "/home/{{amazon_user}}"
     creates: "/etc/letsencrypt/live/{{public_dns_zone}}"
-    
-- copy:
-    src: "/etc/letsencrypt/archive"
-    dest: "/etc/origin/master/"
+
+- name: copy certs folder
+  copy: src=/etc/letsencrypt/archive dest=/etc/origin/master/ remote_src=yes directory_mode=yes
   become: true
   ignore_errors: false
   delegate_to: "{{master_public_ip}}"
-  remote_user: "{{amazon_user}}"     
+  remote_user: "{{amazon_user}}"       
 
 - name: Scale router back to 1
   shell: "oc scale dc/router --replicas=1 -n default && sleep 3" 
