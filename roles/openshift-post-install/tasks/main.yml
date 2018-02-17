@@ -12,7 +12,7 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: false
-  when: true
+  when: metrics_result|succeeded
 
 
 - name: Provide anyuid exception for shellinbox
@@ -43,7 +43,9 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"    
   ignore_errors: true
+  register: epel_check
   become: true
+  when: provision_ssl_certs  
 
 - name: Install certbot dependencies
   shell: "yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional"
@@ -51,6 +53,7 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true
+  when: provision_ssl_certs  
   
 
 - name: install certbot and shellinabox
@@ -63,12 +66,14 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   ignore_errors: true
+  when: provision_ssl_certs
 
 - name: Scale router down to zero
   shell: "oc scale dc/router --replicas=0 -n default && sleep 3" 
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   become: false
+  when: provision_ssl_certs  
   ignore_errors: true
 
 - name: Ansible check if certs are already provisioned
@@ -78,6 +83,7 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   become: true 
+  when: provision_ssl_certs  
   ignore_errors: false
   
 - name: Get custom certs
@@ -95,9 +101,9 @@
 - name: copy certs folder
   command: creates="/etc/origin/master/archive" mv /etc/letsencrypt/archive /etc/origin/master/archive
   remote_user: "{{amazon_user}}"
-  ignore_errors: true
+  ignore_errors: true 
   become: true
-  when: certs_result
+  when: provision_ssl_certs and "'error' not in certs_result.stderr"
   delegate_to: "{{master_public_ip}}"
 
 - name: Scale router back to 1
@@ -106,6 +112,7 @@
   remote_user: "{{amazon_user}}"
   become: false
   ignore_errors: true  
+  when: provision_ssl_certs and "'error' not in certs_result.stderr"  
   
 - name: Download yq
   get_url:
@@ -114,7 +121,7 @@
     mode: 0755
   become: true 
   ignore_errors: true
-  when: certs_result
+  when: provision_ssl_certs and "'error' not in certs_result.stderr"
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
   
@@ -124,7 +131,7 @@
     dest: "~{{amazon_user}}/patch.yaml"
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"
-  when: certs_result
+  when: provision_ssl_certs and "'error' not in certs_result.stderr"
   ignore_errors: true 
 
 - name: Move foo to bar
@@ -132,7 +139,7 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   become: true
-  when: certs_result
+  when: provision_ssl_certs and "'error' not in certs_result.stderr"
   delegate_to: "{{master_public_ip}}"
   
 - name: patch master-config to include custom certs
@@ -141,7 +148,7 @@
   remote_user: "{{amazon_user}}"
   ignore_errors: true
   register: certs_result
-  when: certs_result
+  when: provision_ssl_certs and "'error' not in certs_result.stderr"
   become: true
 
 - name: restart atomic openshift service to pick new certs
@@ -149,7 +156,7 @@
   delegate_to: "{{master_public_ip}}"
   remote_user: "{{amazon_user}}"  
   ignore_errors: false  
-  when: certs_result
+  when: provision_ssl_certs and "'error' not in certs_result.stderr"
   systemd:
     state: restarted
     daemon_reload: yes
