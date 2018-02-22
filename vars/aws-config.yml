@@ -22,7 +22,7 @@ generic_user_password: openshift
 
 bastion_ami_size: t2.large
 master_ami_size: t2.large
-node_ami_size: t2.xlarge
+node_ami_size: t2.large
 
 master_root_volume_size: 100
 node_root_volume_size: 100
