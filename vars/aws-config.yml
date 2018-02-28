@@ -3,12 +3,12 @@ public_dns_zone: "workshop.osecloud.com"
 public_subdomain_prefix: "apps"
 aws_key_pair: "ck_saop"
 ami_id: "ami-5fd69a33"
-provision_ssl_certs: true
+provision_ssl_certs: false
 
 install_metrics: false
 install_prometheus: false
 install_logging: false
-install_gluster: true
+install_gluster: false
 
 gluster_ami_size: t2.large
 gluster_volume_size: 100
