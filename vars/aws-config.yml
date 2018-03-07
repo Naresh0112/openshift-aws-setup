@@ -1,5 +1,5 @@
 region: "sa-east-1"
-public_dns_zone: "workshop.osecloud.com"
+public_dns_zone: "ck.osecloud.com"
 public_subdomain_prefix: "apps"
 aws_key_pair: "ck_saop"
 ami_id: "ami-5fd69a33"
